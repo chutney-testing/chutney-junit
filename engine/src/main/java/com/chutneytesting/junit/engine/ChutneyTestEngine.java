@@ -3,6 +3,7 @@ package com.chutneytesting.junit.engine;
 import com.chutneytesting.ExecutionConfiguration;
 import com.chutneytesting.engine.api.glacio.GlacioAdapterConfiguration;
 import com.chutneytesting.junit.api.Chutney;
+import com.chutneytesting.junit.api.EnvironmentService;
 import com.chutneytesting.tools.UncheckedException;
 import java.lang.reflect.Constructor;
 import java.util.Optional;

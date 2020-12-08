@@ -1,8 +1,8 @@
 package com.chutneytesting.junit.engine;
 
-
 import com.chutneytesting.environment.domain.Environment;
 import com.chutneytesting.environment.domain.Target;
+import com.chutneytesting.junit.api.EnvironmentService;
 
 public class EnvironmentServiceImpl implements EnvironmentService {
 

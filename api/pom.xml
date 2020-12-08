@@ -12,4 +12,10 @@
 
     <artifactId>chutney-junit-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.chutneytesting</groupId>
+            <artifactId>environment</artifactId>
+        </dependency>
+    </dependencies>
 </project>

@@ -1,4 +1,4 @@
-package com.chutneytesting.junit.engine;
+package com.chutneytesting.junit.api;
 
 import com.chutneytesting.environment.domain.Environment;
 import com.chutneytesting.environment.domain.Target;
