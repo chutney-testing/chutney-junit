@@ -1,5 +1,21 @@
 package test.com.chutneytesting.junit.engine;
 
+import com.chutneytesting.engine.api.execution.StepDefinitionDto;
+import com.chutneytesting.glacio.api.GlacioAdapter;
+import com.chutneytesting.junit.engine.ChutneyEngineDescriptor;
+import com.chutneytesting.junit.engine.DiscoverySelectorResolver;
+import com.chutneytesting.junit.engine.FeatureDescriptor;
+import com.chutneytesting.junit.engine.ScenarioDescriptor;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.engine.EngineDiscoveryRequest;
+import org.junit.platform.engine.TestDescriptor;
+import org.junit.platform.engine.UniqueId;
+import org.junit.platform.engine.discovery.FileSelector;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static com.chutneytesting.junit.engine.DiscoverySelectorResolver.FEATURE_SEGMENT_TYPE;
 import static com.chutneytesting.junit.engine.DiscoverySelectorResolver.SCENARIO_SEGMENT_TYPE;
 import static java.util.Collections.singletonList;
@@ -9,28 +25,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.chutneytesting.engine.api.glacio.GlacioAdapter;
-import com.chutneytesting.engine.domain.execution.StepDefinition;
-import com.chutneytesting.junit.engine.ChutneyEngineDescriptor;
-import com.chutneytesting.junit.engine.DiscoverySelectorResolver;
-import com.chutneytesting.junit.engine.FeatureDescriptor;
-import com.chutneytesting.junit.engine.ScenarioDescriptor;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.Test;
-import org.junit.platform.engine.EngineDiscoveryRequest;
-import org.junit.platform.engine.TestDescriptor;
-import org.junit.platform.engine.UniqueId;
-import org.junit.platform.engine.discovery.FileSelector;
-
 class DiscoverySelectorResolverTest {
 
     @Test
     void should_add_feature_and_scenario_descriptors_when_resolve() {
         // Given
         GlacioAdapter glacioAdapter = mock(GlacioAdapter.class);
-        List<StepDefinition> stepDefinitions = buildFeatureResultParsing("scenario one", "scenario two");
+        List<StepDefinitionDto> stepDefinitions = buildFeatureResultParsing("scenario one", "scenario two");
         when(glacioAdapter.toChutneyStepDefinition(any())).thenReturn(stepDefinitions);
 
         EngineDiscoveryRequest discoveryRequest = mock(EngineDiscoveryRequest.class);
@@ -67,15 +68,15 @@ class DiscoverySelectorResolverTest {
         });
     }
 
-    private List<StepDefinition> buildFeatureResultParsing(String... scenarioNames) {
-        List<StepDefinition> stepDefinitions = new ArrayList<>();
+    private List<StepDefinitionDto> buildFeatureResultParsing(String... scenarioNames) {
+        List<StepDefinitionDto> stepDefinitions = new ArrayList<>();
         for (String scenarioName : scenarioNames) {
             stepDefinitions.add(buildStepDefinitionByName(scenarioName));
         }
         return stepDefinitions;
     }
 
-    private StepDefinition buildStepDefinitionByName(String name) {
-        return new StepDefinition(name, null, "", null, null, null, null, null);
+    private StepDefinitionDto buildStepDefinitionByName(String name) {
+        return new StepDefinitionDto(name, null, "", null, null, null, null, null);
     }
 }

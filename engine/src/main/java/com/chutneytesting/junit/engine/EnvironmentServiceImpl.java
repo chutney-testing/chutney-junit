@@ -1,19 +1,20 @@
 package com.chutneytesting.junit.engine;
 
-import com.chutneytesting.environment.domain.Environment;
-import com.chutneytesting.environment.domain.Target;
+import com.chutneytesting.environment.api.EmbeddedEnvironmentApi;
+import com.chutneytesting.environment.api.dto.EnvironmentDto;
+import com.chutneytesting.environment.api.dto.TargetDto;
 import com.chutneytesting.junit.api.EnvironmentService;
 
 public class EnvironmentServiceImpl implements EnvironmentService {
 
-    private final com.chutneytesting.environment.domain.EnvironmentService delegate;
+    private final EmbeddedEnvironmentApi delegate;
 
-    public EnvironmentServiceImpl(com.chutneytesting.environment.domain.EnvironmentService delegate) {
+    public EnvironmentServiceImpl(EmbeddedEnvironmentApi delegate) {
         this.delegate = delegate;
     }
 
     @Override
-    public void addEnvironment(Environment environment) {
+    public void addEnvironment(EnvironmentDto environment) {
         delegate.createEnvironment(environment);
     }
 
@@ -23,7 +24,7 @@ public class EnvironmentServiceImpl implements EnvironmentService {
     }
 
     @Override
-    public void addTarget(String environmentName, Target target) {
+    public void addTarget(String environmentName, TargetDto target) {
         delegate.addTarget(environmentName, target);
     }
 }

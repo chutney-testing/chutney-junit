@@ -1,7 +1,7 @@
 package com.chutneytesting.junit.engine;
 
-import com.chutneytesting.ExecutionConfiguration;
-import com.chutneytesting.engine.api.glacio.GlacioAdapterConfiguration;
+import com.chutneytesting.environment.EnvironmentConfiguration;
+import com.chutneytesting.glacio.GlacioAdapterConfiguration;
 import com.chutneytesting.junit.api.Chutney;
 import com.chutneytesting.junit.api.EnvironmentService;
 import com.chutneytesting.tools.UncheckedException;
@@ -26,7 +26,7 @@ public class ChutneyTestEngine extends HierarchicalTestEngine<ChutneyEngineExecu
 
     public ChutneyTestEngine() {
         try {
-            glacioAdapterConfiguration = new GlacioAdapterConfiguration(new ExecutionConfiguration(), getEnvironmentDirectoryPath(), getAgentNetworkFilePath());
+            glacioAdapterConfiguration = new GlacioAdapterConfiguration(getEnvironmentDirectoryPath());
             chutneyClass = findChutneyClass();
         } catch (Exception e) {
             LOGGER.error("{} instantiation error", getId(), e);
@@ -63,7 +63,7 @@ public class ChutneyTestEngine extends HierarchicalTestEngine<ChutneyEngineExecu
 
     @Override
     protected ChutneyEngineExecutionContext createExecutionContext(ExecutionRequest executionRequest) {
-        return new ChutneyEngineExecutionContext(glacioAdapterConfiguration.executionConfiguration(), executionRequest);
+        return new ChutneyEngineExecutionContext(glacioAdapterConfiguration.executionConfiguration());
     }
 
     private Object findChutneyClass() {
@@ -79,7 +79,8 @@ public class ChutneyTestEngine extends HierarchicalTestEngine<ChutneyEngineExecu
         try {
             try {
                 Constructor<?> constructor = aClass.getConstructor(EnvironmentService.class);
-                return constructor.newInstance(new EnvironmentServiceImpl(glacioAdapterConfiguration.environmentService()));
+                EnvironmentConfiguration environmentConfiguration = new EnvironmentConfiguration(getEnvironmentDirectoryPath());
+                return constructor.newInstance(new EnvironmentServiceImpl(environmentConfiguration.getEnvironmentEmbeddedApplication()));
             } catch (NoSuchMethodException nsme) {
                 return aClass.newInstance();
             }
@@ -90,9 +91,5 @@ public class ChutneyTestEngine extends HierarchicalTestEngine<ChutneyEngineExecu
 
     private String getEnvironmentDirectoryPath() {
         return System.getProperty("chutney.junit.engine.conf.env.path", ".chutney/junit/conf");
-    }
-
-    private String getAgentNetworkFilePath() {
-        return System.getProperty("chutney.junit.engine.conf.agent.path", ".chutney/junit/conf/endpoints.json");
     }
 }
