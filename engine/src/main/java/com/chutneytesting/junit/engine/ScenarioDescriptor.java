@@ -1,8 +1,8 @@
 package com.chutneytesting.junit.engine;
 
-import com.chutneytesting.engine.domain.execution.StepDefinition;
-import com.chutneytesting.engine.domain.execution.report.Status;
-import com.chutneytesting.engine.domain.execution.report.StepExecutionReport;
+import com.chutneytesting.engine.api.execution.StatusDto;
+import com.chutneytesting.engine.api.execution.StepDefinitionDto;
+import com.chutneytesting.engine.api.execution.StepExecutionReportDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.platform.engine.TestSource;
 import org.junit.platform.engine.UniqueId;
@@ -11,15 +11,18 @@ import org.junit.platform.engine.support.hierarchical.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.fasterxml.jackson.databind.SerializationFeature.FAIL_ON_EMPTY_BEANS;
+
 public class ScenarioDescriptor extends AbstractTestDescriptor implements Node<ChutneyEngineExecutionContext> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScenarioDescriptor.class);
-    private static final ObjectMapper om = new ObjectMapper();
+    private static final ObjectMapper om = new ObjectMapper()
+        .configure(FAIL_ON_EMPTY_BEANS, false);
 
-    private StepDefinition stepDefinition;
-    private StepExecutionReport report;
+    private final StepDefinitionDto stepDefinition;
+    private StepExecutionReportDto report;
 
-    protected ScenarioDescriptor(UniqueId uniqueId, String displayName, TestSource source, StepDefinition stepDefinition) {
+    protected ScenarioDescriptor(UniqueId uniqueId, String displayName, TestSource source, StepDefinitionDto stepDefinition) {
         super(uniqueId, displayName, source);
         this.stepDefinition = stepDefinition;
     }
@@ -44,21 +47,21 @@ public class ScenarioDescriptor extends AbstractTestDescriptor implements Node<C
         LOGGER.info("status : {}", report.status);
         LOGGER.info(om.writerWithDefaultPrettyPrinter().writeValueAsString(report));
 
-        if (Status.FAILURE.equals(report.status)) {
-            StepExecutionReport failedStepReport = findFailedStep(report);
+        if (StatusDto.FAILURE.equals(report.status)) {
+            StepExecutionReportDto failedStepReport = findFailedStep(report);
             throw new Exception(failedStepReport.errors.stream().reduce((s, s2) -> String.join("\n", s, s2))
                 .orElse("Scenario " + stepDefinition.name + " FAILURE")
             );
         }
     }
 
-    private StepExecutionReport findFailedStep(StepExecutionReport rootReport) {
+    private StepExecutionReportDto findFailedStep(StepExecutionReportDto rootReport) {
         if (rootReport.steps.isEmpty()) {
             return rootReport;
         }
 
-        StepExecutionReport failedChild = rootReport.steps.stream()
-            .filter(r -> Status.FAILURE.equals(r.status))
+        StepExecutionReportDto failedChild = rootReport.steps.stream()
+            .filter(r -> StatusDto.FAILURE.equals(r.status))
             .findAny().get();
         return findFailedStep(failedChild);
     }

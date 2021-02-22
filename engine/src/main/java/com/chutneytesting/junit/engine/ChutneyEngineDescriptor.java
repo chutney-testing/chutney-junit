@@ -15,7 +15,7 @@ import org.junit.platform.engine.support.hierarchical.Node;
 
 public class ChutneyEngineDescriptor extends EngineDescriptor implements Node<ChutneyEngineExecutionContext> {
 
-    private Optional<Object> chutneyClass;
+    private final Optional<Object> chutneyClass;
 
     public ChutneyEngineDescriptor(UniqueId uniqueId, String displayName, Object chutneyClass) {
         super(uniqueId, displayName);
@@ -32,8 +32,6 @@ public class ChutneyEngineDescriptor extends EngineDescriptor implements Node<Ch
     public void after(ChutneyEngineExecutionContext context) throws Exception {
         invokeHook(AfterAll.class);
     }
-
-
 
     private void invokeHook(Class<? extends Annotation> annotationType) throws ReflectiveOperationException {
         if (!this.children.isEmpty() && chutneyClass.isPresent()) {

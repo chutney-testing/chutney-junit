@@ -1,42 +1,25 @@
 package com.chutneytesting.junit.engine;
 
-import static java.util.stream.Collectors.toList;
-
-import com.chutneytesting.engine.api.glacio.GlacioAdapter;
-import com.chutneytesting.engine.domain.execution.StepDefinition;
+import com.chutneytesting.engine.api.execution.StepDefinitionDto;
+import com.chutneytesting.glacio.api.GlacioAdapter;
 import com.chutneytesting.junit.api.Chutney;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
+import org.junit.platform.engine.*;
+import org.junit.platform.engine.discovery.*;
+import org.junit.platform.engine.support.descriptor.ClassSource;
+import org.junit.platform.engine.support.descriptor.MethodSource;
+import org.junit.platform.engine.support.descriptor.UriSource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
+import java.io.*;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Predicate;
-import org.junit.platform.engine.EngineDiscoveryRequest;
-import org.junit.platform.engine.Filter;
-import org.junit.platform.engine.TestDescriptor;
-import org.junit.platform.engine.TestSource;
-import org.junit.platform.engine.UniqueId;
-import org.junit.platform.engine.discovery.ClassSelector;
-import org.junit.platform.engine.discovery.ClasspathResourceSelector;
-import org.junit.platform.engine.discovery.ClasspathRootSelector;
-import org.junit.platform.engine.discovery.DirectorySelector;
-import org.junit.platform.engine.discovery.FileSelector;
-import org.junit.platform.engine.discovery.PackageNameFilter;
-import org.junit.platform.engine.discovery.PackageSelector;
-import org.junit.platform.engine.discovery.UniqueIdSelector;
-import org.junit.platform.engine.discovery.UriSelector;
-import org.junit.platform.engine.support.descriptor.ClassSource;
-import org.junit.platform.engine.support.descriptor.MethodSource;
-import org.junit.platform.engine.support.descriptor.UriSource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
+import static java.util.stream.Collectors.toList;
 
 public class DiscoverySelectorResolver {
 
@@ -188,14 +171,14 @@ public class DiscoverySelectorResolver {
 
             FeatureDescriptor featureDescriptor = new FeatureDescriptor(uniqueId, name, featureSource(testSource));
 
-            List<StepDefinition> stepDefinitions = parseFeature(featureContent);
+            List<StepDefinitionDto> stepDefinitions = parseFeature(featureContent);
             stepDefinitions.forEach(stepDefinition -> resolveScenario(featureDescriptor, stepDefinition));
 
             parent.addChild(featureDescriptor);
         }
     }
 
-    private void resolveScenario(FeatureDescriptor parentFeature, StepDefinition stepDefinition) {
+    private void resolveScenario(FeatureDescriptor parentFeature, StepDefinitionDto stepDefinition) {
         ScenarioDescriptor scenarioDescriptor =
             new ScenarioDescriptor(
                 parentFeature.getUniqueId().append(SCENARIO_SEGMENT_TYPE, stepDefinition.name),
@@ -205,7 +188,7 @@ public class DiscoverySelectorResolver {
         parentFeature.addChild(scenarioDescriptor);
     }
 
-    private List<StepDefinition> parseFeature(String featureContent) {
+    private List<StepDefinitionDto> parseFeature(String featureContent) {
         return glacioAdapter.toChutneyStepDefinition(featureContent);
     }
 
