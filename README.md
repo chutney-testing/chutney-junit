@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/chutney-testing/chutney-junit.svg?branch=master)](https://travis-ci.com/chutney-testing/chutney-junit)
+[![Build](https://github.com/chutney-testing/chutney-junit/actions/workflows/maven.yml/badge.svg?branch=master)](https://github.com/chutney-testing/chutney-junit/actions/workflows/maven.yml)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/559893368d134d729b204891e3ce0239)](https://www.codacy.com/gh/chutney-testing/chutney-junit?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=chutney-testing/chutney-junit&amp;utm_campaign=Badge_Grade)
 [![Coverage Status](https://codecov.io/gh/chutney-testing/chutney-junit/branch/master/graph/badge.svg)](https://codecov.io/gh/chutney-testing/chutney-junit/)
 [![Download](https://api.bintray.com/packages/chutney-testing/maven/chutney-junit/images/download.svg) ](https://bintray.com/chutney-testing/maven/chutney-junit/_latestVersion)
