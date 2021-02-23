@@ -18,4 +18,6 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
+      env:
+        BUILD_ENV: 'github-actions'
       run: mvn -B -V verify
