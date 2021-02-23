@@ -353,7 +353,7 @@
         <repository>
             <id>bintray-server-id</id>
             <name>chutney-testing-maven</name>
-            <url>https://api.bintray.com/maven/chutney-testing/maven/chutney-junit/;publish=0</url>
+            <url>https://api.bintray.com/maven/chutney-testing/maven/chutney-junit/;publish=1</url>
         </repository>
     </distributionManagement>
 
