@@ -6,7 +6,7 @@
 
     <groupId>com.chutneytesting</groupId>
     <artifactId>chutney-junit-parent</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.0.0</version>
     <packaging>pom</packaging>
 
     <name>Chutney JUnit</name>
@@ -41,7 +41,7 @@
         <url>https://github.com/chutney-testing/chutney-junit.git</url>
         <connection>scm:git:git@github.com:chutney-testing/chutney-junit.git</connection>
         <developerConnection>scm:git:git@github.com:chutney-testing/chutney-junit.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>0.0.0</tag>
     </scm>
 
     <issueManagement>
